@@ -4,12 +4,14 @@
  */
 package videolecture;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Course;
 import models.User;
 import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.net.ftp.FTPClient;
 
 /**
@@ -162,7 +164,7 @@ public class SelectCourse extends javax.swing.JFrame {
         
         try {
             Runtime.getRuntime().exec("\"C:\\Program Files (x86)\\Adobe\\Flash Media Live Encoder 3.2\\FMLECmd.exe\" /s rtmp://live.justin.tv/app+live_51868415_pQY4AEqhAKvNE5Yaje6tPZaedT0rk2");
-            wait(5000);
+            Thread.sleep(2000);
         } catch (IOException ex) {
             Logger.getLogger(SelectCourse.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -180,19 +182,35 @@ public class SelectCourse extends javax.swing.JFrame {
         try {
             client.connect("oege.ie.hva.nl");
             client.login("grootd007", "dFfHHrYD");
+            client.enterLocalPassiveMode();
+            client.changeWorkingDirectory("PDL/VideoLectures");
+            
+            File firstLocalFile = new File("F:\\videoLectures\\videoLecture.f4v");
+ 
+            String firstRemoteFile = "videoLecture.f4v";
+            InputStream inputStream = new FileInputStream(firstLocalFile);
+ 
+            System.out.println("Start uploading first file");
+            boolean done = client.storeFile(firstRemoteFile, inputStream);
+            inputStream.close();
+            if (done) {
+                System.out.println("The first file is uploaded successfully.");
+            }
 
             //
             // Create an InputStream of the file to be uploaded
             //
-            String filename = "F:\\videoLectures\\videoLecture.f4v";
-            fis = new FileInputStream(filename);
-
-            //
-            // Store file to server
-            //
-            client.changeWorkingDirectory("PDL/VideoLectures");
-            client.storeFile(filename, fis);
-            client.rename(filename, courseName+".f4v");
+//            String filename = "F:\\videoLectures\\videoLecture.f4v";
+//            System.out.println(filename);
+//            fis = new FileInputStream(filename);
+//
+//            //
+//            // Store file to server
+//            //
+//            
+//            client.storeFile(filename, fis);
+//            
+            client.rename(firstRemoteFile, courseName+".f4v");
             client.logout();
         } catch (IOException e) {
             e.printStackTrace();

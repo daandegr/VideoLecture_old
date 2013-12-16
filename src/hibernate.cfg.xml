@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://145.92.6.82:3306/pdl2?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">pdl12</property>
+    <property name="hibernate.connection.password">naturalcool</property>
+    <property name="hbm2ddl.auto">update</property>
+    <property name="current_session_context_class">thread</property>
+    <mapping class="models.Course"/>
+    <mapping class="models.User"/>
+    <mapping class="models.CourseTeacher"/>
+  </session-factory>
+</hibernate-configuration>
